@@ -1,0 +1,40 @@
+.calculator{
+    display: flex;
+    flex-direction: column;
+    max-width: 300px;
+    height: 300px;
+}
+.display{
+    display: flex;
+    flex: 1; /* 1 share of the column height */
+    background-color: azure;
+    border: 3px solid #333;   /* dark grey line */
+    border-radius: 0px;       /* slightly rounded corners */
+}
+.buttons{
+    display: flex;
+    flex: 4; /* 4 shares so rows fill the remaining 80% */
+    flex-direction: column;
+    height: 80%;
+}
+.row {
+    display: flex;
+    width: 100%;
+    flex: 1;
+}
+.row button {
+    flex: 1 1;
+    box-sizing: border-box;
+    border-radius: 0px;   
+    /* Remove width property if present */
+}
+.row button:hover {
+  background-color: #ddd;   /* light grey on hover */
+  cursor: pointer;          /* shows hand pointer */
+}
+
+.row button.equals { flex: 3; }
+.row button.divide { flex: 0 0 25%; }
+
+
+/* Remove .button class if not used elsewhere */
