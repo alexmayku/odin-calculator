@@ -1,21 +1,38 @@
+body{
+    display: flex;
+    align-items: center;
+    flex-direction: column;
+    font-family: 'Space Mono', monospace;
+    min-height: 100vh;
+    padding-top: 60px;
+}
 .calculator{
     display: flex;
     flex-direction: column;
+    width: 100vw;
+    height: 100vh;
     max-width: 300px;
-    height: 300px;
+    max-height: 300px;
 }
 .display{
-    display: flex;
-    flex: 1; /* 1 share of the column height */
-    background-color: azure;
-    border: 3px solid #333;   /* dark grey line */
-    border-radius: 0px;       /* slightly rounded corners */
+    flex: 1 1 0;        /* 1 share */
+    min-height: 45px;      /* prevent content from forcing bigger size */
+    background: lightblue;
+    text-align: left;
+    font-size: 2rem;
+    padding: 10px;
+    border: 0.1px solid #ffffff;         /* dark grey border */
+    font-family: 'Space Mono', monospace; /* calculator feel */
+    font-size: 2.5rem;    
+    border-top-left-radius: 10px;
+    border-top-right-radius: 10px;
+            /* large, readable numbers */
+
 }
 .buttons{
     display: flex;
-    flex: 4; /* 4 shares so rows fill the remaining 80% */
+    flex: 4 1 0; /* 4 shares so rows fill the remaining 80% */
     flex-direction: column;
-    height: 80%;
 }
 .row {
     display: flex;
@@ -25,16 +42,28 @@
 .row button {
     flex: 1 1;
     box-sizing: border-box;
-    border-radius: 0px;   
+    min-height: 65px;
+    background-color: #0A0A0A;
+    font-size: 1.5rem;
+    color: #ffffff;
+    border: 0.1px solid #ffffff;  
     /* Remove width property if present */
 }
-.row button:hover {
-  background-color: #ddd;   /* light grey on hover */
+.bottom-right{
+    border-bottom-right-radius: 10px;
+}
+
+.bottom-left{
+    border-bottom-left-radius: 10px;
+}
+.row button:hover { 
+    background-color: #222222;
   cursor: pointer;          /* shows hand pointer */
 }
 
 .row button.equals { flex: 3; }
 .row button.divide { flex: 0 0 25%; }
+.row button.btn-0 { flex: 0 0 25%; }
 
 
 /* Remove .button class if not used elsewhere */

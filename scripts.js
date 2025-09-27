@@ -1,62 +1,72 @@
-//we're building a calculator which can do addition, 
-//subtraciton, multiplication and division.
-//we need to have three variables which will work 
-//via an operator function to do the math
-//define these varaiables as a, operator, b
-//define the function operate
-//we need to use the number buttons to assign the variables a and b
-//we need to use the operator buttons to assign the variable operator
-//we need a way to first assign the variable a, then the variable b
-//we need a running total which is the outcome which is what the 
-//operate function updates
-//clear will 0 this
-//user presses a number this then updates the variable a, 
-//no matter how many numbers they press a temporary variable called 'memory' keeps gorwing
-//user presses an operator, now if a is empty = put it in a clear the memory, if a is full put it in b clear the memory and set the operator if a and b are both full operate
-//user triggers an operate via the operator operate 
-//take a operator b = result
-//user presses equal operate and clear result
-
-//define the variables
 let a;
 let b;
 let operator="";
 let memory=[];
 let result=0;
-let lastAnswer;
+let display = "";
+let clearDisplay = false;
+let firstNumberChosen = false;
+
+const operators = [{
+    description: "plus",
+    symbol: "+",
+},{
+    description: "minus",
+    symbol: "-",
+},{
+    description: "times",
+    symbol: "X",
+},{
+    description: "divide",
+    symbol: "÷",
+}]
 
 const setNumber = function(number){
     memory.push(number);
-    console.log(memory)
+    if(clearDisplay===true){
+        display = "";
+        clearDisplay = false;
+        display += number.toString();
+        document.getElementById("display").textContent = display;
+    }
+    else{
+        display += number.toString();
+        document.getElementById("display").textContent = display;
+    }
 }
 
 //define the basic functions for operators
 const setOperator = function(chosenOperator){
-    if(memory.length === 0){
-        console.log(memory)
+    if(firstNumberChosen===false && memory.length === 0){
+        clearDisplay = true;
         return;
     }
-    else if(a===undefined){
+    else if(firstNumberChosen===false){
         a = Number(memory.reduce((acc, current)=>acc+=current.toString(),""));
-        memory = ["a"];
+        firstNumberChosen = true
+        operator = chosenOperator;
+        clearDisplay = true;
+        memory = [];
+        // updateDisplay(chosenOperator);
+        return;
+    }
+    else if (firstNumberChosen === true && memory.length === 0){
         operator = chosenOperator;
         return;
     }
-    else if (b===undefined && memory.includes("a")){
-        memory.shift();
+
+    else if (firstNumberChosen===true){
         b = Number(memory.reduce((acc, current)=>acc+=current.toString(),""));
-        memory = ["b"];
-        operate(a,b,operator);
+        operate(a,b,operator); 
+        clearDisplay = true;
+        display = result.toString();
+        document.getElementById("display").textContent = display;
+        a = result;
         operator = chosenOperator;
+        firstNumberChosen = true;
+        memory = [];
+        // updateDisplay(chosenOperator);
         return;
-    }
-    else if (memory.includes("b")){
-        a=result;
-        memory.shift();
-        b=Number(memory.reduce((acc, current)=>acc+=current.toString(),""));
-        memory = ["b"];
-        operate(a,b,operator);
-        operator = chosenOperator;
     }
     else {
         return;
@@ -66,37 +76,49 @@ const setOperator = function(chosenOperator){
 //define the function for operate
 const operate = function(a,b,operator){
     if (operator==="plus"){
-        result = a+b;
-        console.log(result);
+        result = Number((a+b).toFixed(2));
+        console.log(a);
         console.log(operator);
+        console.log(b);
+        console.log(result);
         return result;
     }
     if(operator ==="minus"){
-        result = a-b;
-        console.log(result);
+        result = Number((a-b).toFixed(2));
+        console.log(a);
         console.log(operator);
+        console.log(b);
+        console.log(result);
         return result;
     }
     if(operator === "divide"){
-        result = a / b;
-        console.log(result);
+        result = Number((a / b).toFixed(2));
+        console.log(a);
         console.log(operator);
+        console.log(b);
+        console.log(result);
         return result;
     }
     if(operator ==="times"){
-        result = a*b;
-        console.log(result);
+        result = Number((a*b).toFixed(2));
+        console.log(a);
         console.log(operator);
+        console.log(b);
+        console.log(result);
         return result;
     }
 }
 
-const equals = function(a,b,operator){
-    memory.shift();
+const equals = function(){
     b = Number(memory.reduce((acc, current)=>acc+=current.toString(),""));
-    lastAnswer = operate(a,b,operator);
-    console.log(lastAnswer);
-    clear();
+    operate(a,b,operator);
+    display = result;
+    document.getElementById("display").textContent = display;
+    a = result;
+    firstNumberChosen = true;
+    b = undefined;
+    memory = [];
+    clearDisplay = true;
 }
 
 const clear = function(){
@@ -105,6 +127,11 @@ const clear = function(){
     operator="";
     memory=[];
     result=0;
+    display = ""
+    firstNumberChosen = false;
+    clearDisplay = false;
+    document.getElementById("display").textContent = result;
+
 }
 
 const one = document.querySelector(".btn-1");
@@ -134,6 +161,9 @@ eight.addEventListener("click", () => setNumber(8));
 const nine = document.querySelector(".btn-9");
 nine.addEventListener("click", () => setNumber(9));
 
+const zero = document.querySelector(".btn-0");
+zero.addEventListener("click", () => setNumber(0));
+
 const plus = document.querySelector(".btn-plus");
 plus.addEventListener("click", () => setOperator("plus"));
 
@@ -153,15 +183,18 @@ const equalsButton = document.querySelector(".btn-equals");
 equalsButton.addEventListener("click", () => equals(a,b,operator));
 
 
-//we type numbers
-//each of these are added to an array
-//when we chooose an operator we then smash this array together and put it in variable a, that's our first number
-//we also set the operator as our chosen operator
-//now we type more numbers these are added to the array
-//when we choose an operator again we need to compute the first calculation and show it as a result 
-//we need to set it as the operator
-//we choose another number and it is added to an array a
-//we choose an operator
-//we then have another number
-//we choose another operator, this needs to compute the sum of the first one and then add it to the result
-//now we choose another number
+// type a number each one goes to memory as typed
+// hit an operator - log it to slot a
+// log the chosen operator to operator
+// type a number each one typed goes to memeory as typed
+// hit an operator - log it to slot b
+// set teh operator
+// operate
+// update the display
+// set a as the result
+// hit an operator 
+// let the operator to that chosen operator
+// type numbers add them to memory
+// hit equals/operator operate
+
+
