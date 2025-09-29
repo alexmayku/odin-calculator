@@ -10,19 +10,44 @@ let firstNumberChosen = false;
 const operators = [{
     description: "plus",
     symbol: "+",
+    css: ".btn-plus"
 },{
     description: "minus",
     symbol: "-",
+    css: ".btn-minus"
 },{
     description: "times",
     symbol: "X",
+    css: ".btn-times"
 },{
     description: "divide",
     symbol: "÷",
+    css: ".btn-divide"
 }]
+
+const highlightOperator = function(a){
+    if(a==="none"){
+    const allButtons = document.querySelectorAll("button");
+    allButtons.forEach(btn => btn.classList.remove("highlight"));    }
+    else {
+    const allButtons = document.querySelectorAll("button");
+    allButtons.forEach(btn => btn.classList.remove("highlight"));    const op = operators.find(obj => obj.description === a);
+    if (op) {
+    const targetButton = document.querySelector(op.css);
+    targetButton.classList.add("highlight");
+    }
+    }
+}
 
 const setNumber = function(number){
     memory.push(number);
+    if(operator === ""){
+        result = 0;
+        a = undefined;
+        b = undefined;
+        firstNumberChosen = false;
+        console.log("working");
+    }
     if(clearDisplay===true){
         display = "";
         clearDisplay = false;
@@ -45,6 +70,7 @@ const setOperator = function(chosenOperator){
         a = Number(memory.reduce((acc, current)=>acc+=current.toString(),""));
         firstNumberChosen = true
         operator = chosenOperator;
+        highlightOperator(operator);
         clearDisplay = true;
         memory = [];
         // updateDisplay(chosenOperator);
@@ -52,6 +78,7 @@ const setOperator = function(chosenOperator){
     }
     else if (firstNumberChosen === true && memory.length === 0){
         operator = chosenOperator;
+        highlightOperator(operator);
         return;
     }
 
@@ -63,6 +90,7 @@ const setOperator = function(chosenOperator){
         document.getElementById("display").textContent = display;
         a = result;
         operator = chosenOperator;
+        highlightOperator(operator);
         firstNumberChosen = true;
         memory = [];
         // updateDisplay(chosenOperator);
@@ -81,6 +109,7 @@ const operate = function(a,b,operator){
         console.log(operator);
         console.log(b);
         console.log(result);
+        highlightOperator("none");
         return result;
     }
     if(operator ==="minus"){
@@ -89,6 +118,7 @@ const operate = function(a,b,operator){
         console.log(operator);
         console.log(b);
         console.log(result);
+        highlightOperator("none");
         return result;
     }
     if(operator === "divide"){
@@ -97,6 +127,7 @@ const operate = function(a,b,operator){
         console.log(operator);
         console.log(b);
         console.log(result);
+        highlightOperator("none");
         return result;
     }
     if(operator ==="times"){
@@ -105,6 +136,7 @@ const operate = function(a,b,operator){
         console.log(operator);
         console.log(b);
         console.log(result);
+        highlightOperator("none");
         return result;
     }
 }
@@ -116,8 +148,9 @@ const equals = function(){
     document.getElementById("display").textContent = display;
     a = result;
     firstNumberChosen = true;
-    b = undefined;
+    b = undefined;  
     memory = [];
+    operator = "";
     clearDisplay = true;
 }
 
@@ -131,6 +164,7 @@ const clear = function(){
     firstNumberChosen = false;
     clearDisplay = false;
     document.getElementById("display").textContent = result;
+    highlightOperator("none");
 
 }
 
@@ -198,3 +232,7 @@ equalsButton.addEventListener("click", () => equals(a,b,operator));
 // hit equals/operator operate
 
 
+
+
+//when an operator is chosen we want to send a css class to a particular div
+//we also want to clear it from all the other divs

@@ -61,9 +61,12 @@ body{
   cursor: pointer;          /* shows hand pointer */
 }
 
+.row button.highlight {
+    background-color: #C45508;
+}
+
 .row button.equals { flex: 3; }
 .row button.divide { flex: 0 0 25%; }
 .row button.btn-0 { flex: 0 0 25%; }
-
 
 /* Remove .button class if not used elsewhere */
